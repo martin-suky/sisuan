@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root type="javafx.scene.layout.StackPane" fx:id="stackPane" opacity="1.0" prefHeight="90.0" prefWidth="500.0" style="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <Label fx:id="subtitles" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="500.0" text="" textAlignment="CENTER">
+      <font>
+        <Font size="30.0" />
+      </font>
+    </Label>
+    <VBox id="VBox" fx:id="buttons" alignment="CENTER" onMouseDragged="#onMouseDragged" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" onMousePressed="#onMousePressed" spacing="5.0" StackPane.alignment="TOP_CENTER">
+      <children>
+        <HBox id="subtitles" alignment="TOP_CENTER" opacity="1.0" prefHeight="100.0" prefWidth="500.0" visible="true" VBox.vgrow="ALWAYS">
+          <children>
+            <Button id="buttonPlay" mnemonicParsing="false" onAction="#play" text="play" />
+            <Button id="buttonPause" mnemonicParsing="false" onAction="#pause" text="pause" />
+            <Button id="buttonStop" mnemonicParsing="false" onAction="#stop" text="stop" />
+            <Button mnemonicParsing="false" onMouseClicked="#openSettings" text="settings" />
+          </children>
+        </HBox>
+        <Label fx:id="timeLabel" style="-fx-background-color: #FFFFFF;&#10;-fx-padding: 2px 5px;&#10;-fx-background-radius: 5;" text="test" />
+        <Slider fx:id="timeSlider" onMouseClicked="#onTimeSliderClicked" prefHeight="21.0" prefWidth="500.0" />
+      </children>
+    </VBox>
+  </children>
+</fx:root>
