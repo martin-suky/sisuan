@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import cz.none.sisuan.ui.UiFactory;
 
-public class Main extends Application {
+public class Sisuan extends Application {
 
 	public static void main(String[] args) {
 		launch(args);

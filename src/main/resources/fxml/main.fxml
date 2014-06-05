@@ -4,6 +4,7 @@
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -18,13 +19,18 @@
       <children>
         <HBox id="subtitles" alignment="TOP_CENTER" opacity="1.0" prefHeight="100.0" prefWidth="500.0" visible="true" VBox.vgrow="ALWAYS">
           <children>
+            <ImageView fx:id="ico" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+              <HBox.margin>
+                <Insets right="15.0" />
+              </HBox.margin>
+            </ImageView>
             <Button id="buttonPlay" mnemonicParsing="false" onAction="#play" text="play" />
             <Button id="buttonPause" mnemonicParsing="false" onAction="#pause" text="pause" />
             <Button id="buttonStop" mnemonicParsing="false" onAction="#stop" text="stop" />
             <Button mnemonicParsing="false" onMouseClicked="#openSettings" text="settings" />
           </children>
         </HBox>
-        <Label fx:id="timeLabel" style="-fx-background-color: #FFFFFF;&#10;-fx-padding: 2px 5px;&#10;-fx-background-radius: 5;" text="test" />
+        <Label fx:id="timeLabel" style="-fx-background-color: #FFFFFF;&#10;-fx-padding: 2px 5px;&#10;-fx-background-radius: 5;" text="00:00:00" />
         <Slider fx:id="timeSlider" onMouseClicked="#onTimeSliderClicked" prefHeight="21.0" prefWidth="500.0" />
       </children>
     </VBox>

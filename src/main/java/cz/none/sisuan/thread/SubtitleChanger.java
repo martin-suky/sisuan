@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import cz.none.sisuan.Constant;
+import cz.none.sisuan.factory.SubtitleFactory;
 import cz.none.sisuan.parser.Subtitle;
 
 public class SubtitleChanger extends Thread {
@@ -32,19 +33,20 @@ public class SubtitleChanger extends Thread {
 	private Label timeLabel;
 
 	private Slider timeSlider;
+	private SubtitleFactory		factory;
 
-	public SubtitleChanger(Label subtitleLabel, Label timeLabel, Slider timeSlider) {
+	public SubtitleChanger(Label subtitleLabel, Label timeLabel, Slider timeSlider, SubtitleFactory factory) {
 		this.subtitleLabel = subtitleLabel;
 		this.timeLabel = timeLabel;
 		this.timeSlider = timeSlider;
+		this.factory = factory;
 		sdf.setTimeZone(TimeZone.getTimeZone("GTM"));
 	}
 
 	@Override
 	public void run() {
-		Subtitle subtitle = null;
 		while (run) {
-			subtitle = updateSubtitles(subtitle);
+			updateSubtitles();
 			updateTime(currentTime);
 
 			currentTime += WAIT;
@@ -54,8 +56,18 @@ public class SubtitleChanger extends Thread {
 		}
 	}
 
-	public void moveToTime(double time) {
-
+	public void moveToTime(long time) {
+		boolean isPaused = Boolean.valueOf(pause);
+		if (!isPaused) {
+			pause(true);
+			sleepThread(500);
+		}
+		factory.jumpSubtitle(time);
+		currentTime = time;
+		updateTime(currentTime);
+		if (!isPaused) {
+			pause(false);
+		}
 	}
 
 	private void updateTime(final long currentTime) {
@@ -68,23 +80,15 @@ public class SubtitleChanger extends Thread {
 		});
 	}
 
-	private Subtitle updateSubtitles(Subtitle subtitle) {
-		if (null == subtitle || currentTime == 0) {
-			if (currentSubtitle < subtitlesSize) {
-				subtitle = subtitles.get(currentSubtitle);
-				currentSubtitle++;
-			}
-		}
+	private void updateSubtitles() {
+		Subtitle subtitle = factory.nextSubtitle(currentTime);
 
-		if (subtitle.getStart() < currentTime) {
+		if (null == subtitle) {
+			setText("");
+		} else {
 			setText(subtitle.getText());
 		}
 
-		if (subtitle.getEnd() < currentTime) {
-			setText("");
-			subtitle = null;
-		}
-		return subtitle;
 	}
 
 	private void setText(final String text) {
@@ -101,6 +105,7 @@ public class SubtitleChanger extends Thread {
 		this.subtitlesSize = subtitles.size();
 		currentSubtitle = 0;
 		currentTime = 0;
+		factory.useSubtitles(subtitles);
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {

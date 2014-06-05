@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -20,7 +21,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import cz.none.sisuan.Constant.Config;
+import cz.none.sisuan.Constant.Ico;
 import cz.none.sisuan.Factory;
+import cz.none.sisuan.factory.SubtitleFactory;
 import cz.none.sisuan.parser.ParserType;
 import cz.none.sisuan.parser.Subtitle;
 import cz.none.sisuan.parser.SubtitleParser;
@@ -49,17 +52,21 @@ public class MainController extends StackPane {
 	private VBox					buttons;
 	@FXML
 	private StackPane				stackPane;
+	@FXML
+	private ImageView				ico;
 	private double					xOffset;
 	private double					yOffset;
 	private Loader					loader;
 	private ConfigService			configService;
+	private SubtitleFactory			subtitleFactory;
 
 	public MainController(Stage main, Loader loader, SubtitleParserFactory subtitleParserFactory,
-			ConfigService configService) {
+ ConfigService configService, SubtitleFactory subtitleFactory) {
 		this.main = main;
 		this.loader = loader;
 		this.subtitleParserFactory = subtitleParserFactory;
 		this.configService = configService;
+		this.subtitleFactory = subtitleFactory;
 		this.main = loader.getMainWindow(main, this, "/fxml/main.fxml");
 
 		setFileDragAndDrop(main.getScene());
@@ -67,19 +74,23 @@ public class MainController extends StackPane {
 		fade.setAutoReverse(true);
 		fade.setFromValue(0);
 		fade.setToValue(1);
-		subtitleChanger = new SubtitleChanger(this.subtitles, timeLabel, timeSlider);
+		subtitleChanger = new SubtitleChanger(this.subtitles, timeLabel, timeSlider, subtitleFactory);
+		ico.setImage(Ico.EJECT);
 		updateFromConfig();
 		main.show();
 
 	}
 
 	private void updateFromConfig() {
-		subtitles.setFont(Font.font("System", configService.getDouble(Config.FONT_SIZE)));
+		Double fontSize = configService.getDouble(Config.FONT_SIZE);
+		subtitles.setFont(Font.font("System", fontSize));
+		subtitles.setTextFill(Color.web(configService.getString(Config.FONT_COLOR)));
 		Color web = Color.web(configService.getString(Config.BACKGROUND_COLOR));
 		Double opacity = configService.getDouble(Config.BACKGROUND_OPACITY);
 		stackPane.setStyle("-fx-background-color: rgba(" + web.getRed() + ", " + web.getGreen() + ", "
 				+ web.getBlue() + ", " + opacity + ");");
 		stackPane.setPrefWidth(configService.getDouble(Config.WINDOW_WIDTH));
+		stackPane.setPrefHeight(fontSize * 3);
 	}
 
 	@FXML
@@ -90,15 +101,18 @@ public class MainController extends StackPane {
 		} else {
 			subtitleChanger.pause(false);
 		}
+		ico.setImage(Ico.PLAY);
 	}
 
 	@FXML
 	public void pause() {
+		ico.setImage(Ico.PAUSE);
 		subtitleChanger.pause(true);
 	}
 
 	@FXML
 	public void stop() {
+		ico.setImage(Ico.STOP);
 		subtitleChanger.stopPlay();
 	}
 
@@ -129,6 +143,8 @@ public class MainController extends StackPane {
 	@FXML
 	public void onTimeSliderClicked(MouseEvent event) {
 		double value = timeSlider.getValue();
+		long time = (long) value;
+		subtitleChanger.moveToTime(time);
 	}
 
 	@FXML
@@ -186,5 +202,6 @@ public class MainController extends StackPane {
 		SubtitleParser subtitleParser = subtitleParserFactory.getObject(valueOf);
 		parseSubtitles = subtitleParser.parseSubtitles(file);
 		subtitleChanger.setSubtitles(parseSubtitles);
+		ico.setImage(Ico.STOP);
 	}
 }

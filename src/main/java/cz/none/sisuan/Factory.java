@@ -1,5 +1,7 @@
 package cz.none.sisuan;
 
+import cz.none.sisuan.factory.SubtitleFactory;
+import cz.none.sisuan.factory.impl.SubtitleFactoryImpl;
 import cz.none.sisuan.parser.SubtitleParser;
 import cz.none.sisuan.parser.SubtitleParserFactory;
 import cz.none.sisuan.parser.impl.SubtitleParserFactoryImpl;
@@ -30,6 +32,7 @@ public class Factory {
 	private final SrtLineParser 				srtLineParser;
 	private final SrtConcreteLineParserFactory 	srtConcreteLineParserFactory;
 	private final ConfigService					configService;
+	private final SubtitleFactory				subtitleFactory;
 
 	private Factory() {
 		configService = new ConfigServiceImpl(Constant.CONFIG_FILE);
@@ -41,6 +44,7 @@ public class Factory {
 		srtLineParser = new SrtLineParserImpl(srtConcreteLineParserFactory);
 		srtSubtitleParser = new SrtSubtitleParser(fileReader, srtLineParser);
 		subtitleParserFactory = new SubtitleParserFactoryImpl(new SubtitleParser[] { srtSubtitleParser });
+		subtitleFactory = new SubtitleFactoryImpl();
 	}
 
 	public static UiFactory getUiFactory() {
@@ -57,5 +61,9 @@ public class Factory {
 
 	public static ConfigService getConfigService() {
 		return INSTANCE.configService;
+	}
+
+	public static SubtitleFactory getSubtitleFactory() {
+		return INSTANCE.subtitleFactory;
 	}
 }

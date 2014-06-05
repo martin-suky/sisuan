@@ -1,5 +1,7 @@
 package cz.none.sisuan;
 
+import javafx.scene.image.Image;
+
 public class Constant {
 
 	public static final String	CONFIG_FILE	= "config/config.properties";
@@ -10,6 +12,13 @@ public class Constant {
 		public static final String	BACKGROUND_COLOR	= "background.color";
 		public static final String	BACKGROUND_OPACITY	= "background.opacity";
 		public static final String	WINDOW_WIDTH		= "window.width";
+	}
+
+	public static final class Ico {
+		public static final Image	PLAY	= new Image(Config.class.getResourceAsStream("/ico/play.png"));
+		public static final Image	PAUSE	= new Image(Config.class.getResourceAsStream("/ico/pause.png"));
+		public static final Image	STOP	= new Image(Config.class.getResourceAsStream("/ico/stop.png"));
+		public static final Image	EJECT	= new Image(Config.class.getResourceAsStream("/ico/eject.png"));
 	}
 
 	public static final class Pattern {

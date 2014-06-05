@@ -8,8 +8,7 @@ import cz.none.sisuan.ui.controller.SettingsController;
 public class UiFactory {
 
 	public MainController getMainController(Stage stage) {
-		return new MainController(stage, Factory.getLoader(), Factory.getSubtitleParserFactory(),
-				Factory.getConfigService());
+		return new MainController(stage, Factory.getLoader(), Factory.getSubtitleParserFactory(), Factory.getConfigService(), Factory.getSubtitleFactory());
 	}
 
 	public SettingsController getSettingsController(Stage parent) {
