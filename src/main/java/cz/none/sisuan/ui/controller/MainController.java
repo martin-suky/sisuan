@@ -36,11 +36,13 @@ import cz.none.sisuan.ui.loader.Loader;
 public class MainController extends StackPane {
 
 	private static final Duration	DURATION	= Duration.millis(500);
+
 	private Stage					main;
+
 	private SubtitleParserFactory	subtitleParserFactory;
-	private List<Subtitle>			parseSubtitles;
-	final FadeTransition			fade		= new FadeTransition(DURATION);
 	private SubtitleChanger			subtitleChanger;
+	private ConfigService			configService;
+	private FileInfoController		fileInfoController;
 
 	@FXML
 	private Label					subtitles;
@@ -54,20 +56,16 @@ public class MainController extends StackPane {
 	private StackPane				stackPane;
 	@FXML
 	private ImageView				ico;
+	final FadeTransition			fade		= new FadeTransition(DURATION);
+
 	private double					xOffset;
 	private double					yOffset;
-	private Loader					loader;
-	private ConfigService			configService;
-	private SubtitleFactory			subtitleFactory;
-	private FileInfoController		fileInfoController;
+	private List<Subtitle>			parseSubtitles;
 
-	public MainController(Stage main, Loader loader, SubtitleParserFactory subtitleParserFactory,
- ConfigService configService, SubtitleFactory subtitleFactory) {
+	public MainController(Stage main, Loader loader, SubtitleParserFactory subtitleParserFactory, ConfigService configService, SubtitleFactory subtitleFactory) {
 		this.main = main;
-		this.loader = loader;
 		this.subtitleParserFactory = subtitleParserFactory;
 		this.configService = configService;
-		this.subtitleFactory = subtitleFactory;
 		this.main = loader.getMainWindow(main, this, "/fxml/main.fxml");
 
 		setFileDragAndDrop(main.getScene());
@@ -88,8 +86,7 @@ public class MainController extends StackPane {
 		subtitles.setTextFill(Color.web(configService.getString(Config.FONT_COLOR)));
 		Color web = Color.web(configService.getString(Config.BACKGROUND_COLOR));
 		Double opacity = configService.getDouble(Config.BACKGROUND_OPACITY);
-		stackPane.setStyle("-fx-background-color: rgba(" + web.getRed() + ", " + web.getGreen() + ", "
-				+ web.getBlue() + ", " + opacity + ");");
+		stackPane.setStyle("-fx-background-color: rgba(" + web.getRed() + ", " + web.getGreen() + ", " + web.getBlue() + ", " + opacity + ");");
 		stackPane.setPrefWidth(configService.getDouble(Config.WINDOW_WIDTH));
 		stackPane.setPrefHeight(fontSize * 3);
 	}

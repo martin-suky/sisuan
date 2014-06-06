@@ -51,7 +51,7 @@ public class SubtitleFactoryImpl implements SubtitleFactory {
 
 	@Override
 	public Subtitle jumpSubtitle(long selectedTime) {
-		SubtitleCrate nearest = findNearest(0, subtitleSize, selectedTime, null);
+		SubtitleCrate nearest = subtitleSize == 0 ? SubtitleCrate.EMPTY : findNearest(0, subtitleSize, selectedTime, null);
 		lastSubtitle = nearest.getSubtitle();
 		position = nearest.getPosition();
 		return nearest.getSubtitle();
@@ -78,9 +78,11 @@ public class SubtitleFactoryImpl implements SubtitleFactory {
 
 	}
 
-	private class SubtitleCrate {
-		private int			position;
-		private Subtitle	subtitle;
+	private static final class SubtitleCrate {
+		private static final SubtitleCrate	EMPTY	= new SubtitleCrate(0, null);
+
+		private final int					position;
+		private final Subtitle				subtitle;
 
 		public SubtitleCrate(int position, Subtitle subtitle) {
 			super();
@@ -92,16 +94,8 @@ public class SubtitleFactoryImpl implements SubtitleFactory {
 			return position;
 		}
 
-		public void setPosition(int position) {
-			this.position = position;
-		}
-
 		public Subtitle getSubtitle() {
 			return subtitle;
-		}
-
-		public void setSubtitle(Subtitle subtitle) {
-			this.subtitle = subtitle;
 		}
 
 	}

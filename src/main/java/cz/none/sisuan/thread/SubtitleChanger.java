@@ -14,25 +14,16 @@ import cz.none.sisuan.parser.Subtitle;
 
 public class SubtitleChanger extends Thread {
 
-	private static final long WAIT = 10;
-	private SimpleDateFormat sdf = new SimpleDateFormat(Constant.Pattern.LABEL_TIME);
+	private static final long	WAIT		= 10;
 
-	private int subtitlesSize;
+	private SimpleDateFormat	sdf			= new SimpleDateFormat(Constant.Pattern.LABEL_TIME);
+	private long				currentTime	= 0;
+	private boolean				run			= true;
+	private boolean				pause		= false;
 
-	private long currentTime = 0;
-	private int currentSubtitle = 0;
-
-	private List<Subtitle> subtitles;
-
-	private Label subtitleLabel;
-
-	private boolean run = true;
-
-	private boolean pause;
-
-	private Label timeLabel;
-
-	private Slider timeSlider;
+	private Label				subtitleLabel;
+	private Label				timeLabel;
+	private Slider				timeSlider;
 	private SubtitleFactory		factory;
 
 	public SubtitleChanger(Label subtitleLabel, Label timeLabel, Slider timeSlider, SubtitleFactory factory) {
@@ -100,17 +91,14 @@ public class SubtitleChanger extends Thread {
 		});
 	}
 
-	public void setSubtitles(List<Subtitle> subtitles) {
-		this.subtitles = subtitles;
-		this.subtitlesSize = subtitles.size();
-		currentSubtitle = 0;
+	public void setSubtitles(final List<Subtitle> subtitles) {
 		currentTime = 0;
 		factory.useSubtitles(subtitles);
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				timeSlider.setMin(0);
-				timeSlider.setMax(SubtitleChanger.this.subtitles.get(subtitlesSize - 1).getEnd());
+				timeSlider.setMax(subtitles.get(subtitles.size() - 1).getEnd());
 			}
 		});
 	}
@@ -122,7 +110,6 @@ public class SubtitleChanger extends Thread {
 	public void stopPlay() {
 		pause(true);
 		sleepThread(500);
-		currentSubtitle = 0;
 		currentTime = 0;
 	}
 
