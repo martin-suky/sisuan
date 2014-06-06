@@ -25,8 +25,8 @@ import cz.none.sisuan.Constant.Config;
 import cz.none.sisuan.Constant.Ico;
 import cz.none.sisuan.Factory;
 import cz.none.sisuan.factory.SubtitleFactory;
+import cz.none.sisuan.model.Subtitle;
 import cz.none.sisuan.model.SubtitleFile;
-import cz.none.sisuan.parser.Subtitle;
 import cz.none.sisuan.parser.SubtitleParser;
 import cz.none.sisuan.parser.SubtitleParserFactory;
 import cz.none.sisuan.service.ConfigService;
@@ -93,25 +93,31 @@ public class MainController extends StackPane {
 
 	@FXML
 	public void play() {
-		if (!subtitleChanger.isAlive()) {
-			subtitleChanger.start();
+		if (subtitleChanger.isReady()) {
+			if (!subtitleChanger.isAlive()) {
+				subtitleChanger.start();
 
-		} else {
-			subtitleChanger.pause(false);
+			} else {
+				subtitleChanger.pause(false);
+			}
+			ico.setImage(Ico.PLAY);
 		}
-		ico.setImage(Ico.PLAY);
 	}
 
 	@FXML
 	public void pause() {
-		ico.setImage(Ico.PAUSE);
-		subtitleChanger.pause(true);
+		if (subtitleChanger.isReady()) {
+			ico.setImage(Ico.PAUSE);
+			subtitleChanger.pause(true);
+		}
 	}
 
 	@FXML
 	public void stop() {
-		ico.setImage(Ico.STOP);
-		subtitleChanger.stopPlay();
+		if (subtitleChanger.isReady()) {
+			ico.setImage(Ico.STOP);
+			subtitleChanger.stopPlay();
+		}
 	}
 
 	@FXML
@@ -140,9 +146,10 @@ public class MainController extends StackPane {
 
 	@FXML
 	public void onTimeSliderClicked(MouseEvent event) {
-		double value = timeSlider.getValue();
-		long time = (long) value;
-		subtitleChanger.moveToTime(time);
+		double value = timeSlider.getWidth();
+		double x = event.getX();
+		double point = x / value;
+		subtitleChanger.movetToPercentage(point);
 	}
 
 	@FXML

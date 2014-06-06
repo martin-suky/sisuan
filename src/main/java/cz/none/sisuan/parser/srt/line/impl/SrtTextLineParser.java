@@ -1,6 +1,6 @@
 package cz.none.sisuan.parser.srt.line.impl;
 
-import cz.none.sisuan.parser.Subtitle.SubtitleBuilder;
+import cz.none.sisuan.model.Subtitle.SubtitleBuilder;
 import cz.none.sisuan.parser.srt.impl.LineType;
 import cz.none.sisuan.parser.srt.line.SrtConcreteLineParser;
 

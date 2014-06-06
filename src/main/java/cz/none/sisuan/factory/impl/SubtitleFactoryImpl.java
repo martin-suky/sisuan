@@ -3,7 +3,7 @@ package cz.none.sisuan.factory.impl;
 import java.util.List;
 
 import cz.none.sisuan.factory.SubtitleFactory;
-import cz.none.sisuan.parser.Subtitle;
+import cz.none.sisuan.model.Subtitle;
 
 public class SubtitleFactoryImpl implements SubtitleFactory {
 

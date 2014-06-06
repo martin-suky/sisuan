@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cz.none.sisuan.Constant;
-import cz.none.sisuan.parser.Subtitle.SubtitleBuilder;
+import cz.none.sisuan.model.Subtitle.SubtitleBuilder;
 import cz.none.sisuan.parser.srt.impl.LineType;
 import cz.none.sisuan.parser.srt.line.SrtConcreteLineParser;
 

@@ -2,9 +2,9 @@ package cz.none.sisuan.parser.srt.impl;
 
 import java.util.List;
 
+import cz.none.sisuan.model.Subtitle;
 import cz.none.sisuan.model.SubtitleFile;
 import cz.none.sisuan.model.SubtitleFormat;
-import cz.none.sisuan.parser.Subtitle;
 import cz.none.sisuan.parser.SubtitleParser;
 import cz.none.sisuan.parser.srt.SrtLineParser;
 import cz.none.sisuan.service.FileReader;

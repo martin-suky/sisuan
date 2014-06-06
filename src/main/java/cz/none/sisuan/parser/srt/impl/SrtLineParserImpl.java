@@ -3,8 +3,8 @@ package cz.none.sisuan.parser.srt.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.none.sisuan.parser.Subtitle;
-import cz.none.sisuan.parser.Subtitle.SubtitleBuilder;
+import cz.none.sisuan.model.Subtitle;
+import cz.none.sisuan.model.Subtitle.SubtitleBuilder;
 import cz.none.sisuan.parser.srt.SrtLineParser;
 import cz.none.sisuan.parser.srt.line.SrtConcreteLineParserFactory;
 

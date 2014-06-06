@@ -1,4 +1,4 @@
-package cz.none.sisuan.parser;
+package cz.none.sisuan.model;
 
 public class Subtitle {
 	private Long start;
