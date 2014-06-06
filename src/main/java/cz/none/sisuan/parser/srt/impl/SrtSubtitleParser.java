@@ -1,9 +1,9 @@
 package cz.none.sisuan.parser.srt.impl;
 
-import java.io.File;
 import java.util.List;
 
-import cz.none.sisuan.parser.ParserType;
+import cz.none.sisuan.model.SubtitleFile;
+import cz.none.sisuan.model.SubtitleFormat;
 import cz.none.sisuan.parser.Subtitle;
 import cz.none.sisuan.parser.SubtitleParser;
 import cz.none.sisuan.parser.srt.SrtLineParser;
@@ -20,14 +20,14 @@ public class SrtSubtitleParser implements SubtitleParser {
 	}
 
 	@Override
-	public List<Subtitle> parseSubtitles(File file) {
+	public List<Subtitle> parseSubtitles(SubtitleFile file) {
 		fileReader.readByLines(file, lineParser);
 		return lineParser.getSubtitles();
 	}
 
 	@Override
-	public ParserType getType() {
-		return ParserType.SRT;
+	public SubtitleFormat getType() {
+		return SubtitleFormat.SRT;
 	}
 
 }

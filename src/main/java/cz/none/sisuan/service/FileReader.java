@@ -1,11 +1,11 @@
 package cz.none.sisuan.service;
 
-import java.io.File;
+import cz.none.sisuan.model.SubtitleFile;
 
 public interface FileReader {
 	public interface DoWithLine {
 		void doLine(String line);
 	}
 
-	void readByLines(File file, DoWithLine doWithLine);
+	void readByLines(SubtitleFile file, DoWithLine doWithLine);
 }

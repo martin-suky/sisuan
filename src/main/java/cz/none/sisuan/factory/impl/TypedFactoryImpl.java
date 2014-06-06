@@ -6,7 +6,7 @@ import java.util.Map;
 import cz.none.sisuan.factory.TypedFactory;
 import cz.none.sisuan.factory.TypedFactoryObject;
 
-public class TypedFactoryImpl<FacObj extends TypedFactoryObject<Type>, Type> implements
+public abstract class TypedFactoryImpl<FacObj extends TypedFactoryObject<Type>, Type> implements
 		TypedFactory<FacObj, Type> {
 
 	private Map<Type, FacObj> parsers = new HashMap<>();

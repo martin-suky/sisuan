@@ -2,6 +2,7 @@ package cz.none.sisuan.ui;
 
 import javafx.stage.Stage;
 import cz.none.sisuan.Factory;
+import cz.none.sisuan.ui.controller.FileInfoController;
 import cz.none.sisuan.ui.controller.MainController;
 import cz.none.sisuan.ui.controller.SettingsController;
 
@@ -13,6 +14,10 @@ public class UiFactory {
 
 	public SettingsController getSettingsController(Stage parent) {
 		return new SettingsController(parent, Factory.getLoader(), Factory.getConfigService());
+	}
+
+	public FileInfoController getFileInfoController(Stage parent) {
+		return new FileInfoController(parent, Factory.getLoader());
 	}
 
 }

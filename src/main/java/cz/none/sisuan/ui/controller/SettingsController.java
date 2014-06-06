@@ -9,9 +9,9 @@ public class SettingsController extends GridPane {
 	private Stage	stage;
 	private ConfigService	configService;
 
-	public SettingsController(Stage parrent, Loader loader, ConfigService configService) {
+	public SettingsController(Stage parent, Loader loader, ConfigService configService) {
 		this.configService = configService;
-		stage = loader.getWindow(parrent, this, "/fxml/settings.fxml");
+		stage = loader.getWindow(parent, this, "/fxml/settings.fxml");
 		stage.show();
 	}
 }

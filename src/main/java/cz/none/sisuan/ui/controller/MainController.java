@@ -19,19 +19,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import cz.none.sisuan.Constant.Config;
 import cz.none.sisuan.Constant.Ico;
 import cz.none.sisuan.Factory;
 import cz.none.sisuan.factory.SubtitleFactory;
-import cz.none.sisuan.parser.ParserType;
+import cz.none.sisuan.model.SubtitleFile;
 import cz.none.sisuan.parser.Subtitle;
 import cz.none.sisuan.parser.SubtitleParser;
 import cz.none.sisuan.parser.SubtitleParserFactory;
 import cz.none.sisuan.service.ConfigService;
 import cz.none.sisuan.thread.SubtitleChanger;
 import cz.none.sisuan.ui.loader.Loader;
-import cz.none.sisuan.util.Util;
 
 public class MainController extends StackPane {
 
@@ -59,6 +59,7 @@ public class MainController extends StackPane {
 	private Loader					loader;
 	private ConfigService			configService;
 	private SubtitleFactory			subtitleFactory;
+	private FileInfoController		fileInfoController;
 
 	public MainController(Stage main, Loader loader, SubtitleParserFactory subtitleParserFactory,
  ConfigService configService, SubtitleFactory subtitleFactory) {
@@ -184,7 +185,6 @@ public class MainController extends StackPane {
 			}
 
 		});
-
 	}
 
 	protected void handleDropFile(File file) {
@@ -192,16 +192,26 @@ public class MainController extends StackPane {
 			return;
 		}
 
-		String fileExtension = Util.getFileExtension(file);
-		ParserType valueOf;
-		try {
-			valueOf = ParserType.valueOf(fileExtension.toUpperCase());
-		} catch (Exception e) {
-			return;
+		fileInfoController = Factory.getUiFactory().getFileInfoController(main);
+		fileInfoController.setOnCloseHandler(new FileInfoCloseHandler());
+		fileInfoController.setFile(file);
+
+	}
+
+	private final class FileInfoCloseHandler implements EventHandler<WindowEvent> {
+
+		@Override
+		public void handle(WindowEvent arg0) {
+			SubtitleFile subtitleFile = fileInfoController.getSubtitleFile();
+			if (null != subtitleFile) {
+				SubtitleParser subtitleParser = subtitleParserFactory.getObject(subtitleFile.getFormat());
+				parseSubtitles = subtitleParser.parseSubtitles(subtitleFile);
+				subtitleChanger.setSubtitles(parseSubtitles);
+				ico.setImage(Ico.STOP);
+			}
+			fileInfoController = null;
+
 		}
-		SubtitleParser subtitleParser = subtitleParserFactory.getObject(valueOf);
-		parseSubtitles = subtitleParser.parseSubtitles(file);
-		subtitleChanger.setSubtitles(parseSubtitles);
-		ico.setImage(Ico.STOP);
+
 	}
 }
