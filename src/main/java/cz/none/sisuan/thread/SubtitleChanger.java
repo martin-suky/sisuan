@@ -31,6 +31,8 @@ public class SubtitleChanger extends Thread {
 	private Slider				timeSlider;
 	private SubtitleFactory		factory;
 
+	private Subtitle	subtitle;
+
 
 	public SubtitleChanger(Label subtitleLabel, Label timeLabel, Slider timeSlider, SubtitleFactory factory) {
 		this.subtitleLabel = subtitleLabel;
@@ -43,14 +45,22 @@ public class SubtitleChanger extends Thread {
 	@Override
 	public void run() {
 		while (run) {
+			long begin = System.currentTimeMillis();
 			lock.writeLock().lock();
-			updateSubtitles();
+			Long updateSubtitles = updateSubtitles();
 			updateTime(currentTime);
-			currentTime += WAIT;
+			long duration = null == updateSubtitles ? 0 : updateSubtitles - currentTime;
+			long sleep = WAIT;
+			if (duration > WAIT + 200) {
+				sleep = duration - (200 + WAIT);
+			}
+			currentTime += sleep;
 			lock.writeLock().unlock();
-			do {
-				sleepThread(WAIT);
-			} while (pause);
+			long wait = sleep - (System.currentTimeMillis() - begin);
+			sleepThread(wait >= 0 ? wait : 0);
+			while (pause) {
+				sleepThread(500);
+			}
 		}
 	}
 
@@ -81,15 +91,18 @@ public class SubtitleChanger extends Thread {
 		});
 	}
 
-	private void updateSubtitles() {
+	private Long updateSubtitles() {
+		Long result = null;
 		Subtitle subtitle = factory.nextSubtitle(currentTime);
 
-		if (null == subtitle) {
+		if (null == subtitle && this.subtitle != null) {
 			setText("");
-		} else {
+		} else if (null != subtitle && !subtitle.equals(this.subtitle)) {
 			setText(subtitle.getText());
+			result = subtitle.getEnd();
 		}
-
+		this.subtitle = subtitle;
+		return result;
 	}
 
 	private void setText(final String text) {
@@ -110,7 +123,6 @@ public class SubtitleChanger extends Thread {
 			@Override
 			public void run() {
 				timeSlider.setMin(0);
-
 				timeSlider.setMax(maxTime);
 			}
 		});
